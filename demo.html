@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <style>
+    </style>
+</head>
+
+<body>
+
+<div id="tt">
+    <ul>
+        <li>加载中...</li>
+        <li>加载中...</li>
+        <li>加载中...</li>
+        <li>加载中...</li>
+        <li>加载中...</li>
+    </ul>
+</div>
+
+<script>
+
+    var module = (function(){
+        var mod ={};
+
+        mod.toDouble = function(n){
+            return n<10? '0'+n : n;
+        }
+
+        mod.getTime = function(nDate, ele, format){
+            var now = new Date(),
+            newY = new Date(nDate[0]),
+            n = (newY-now) / 1000, // 总时间由毫秒转换为秒
+            days = Math.floor(n/3600/24),
+            hours = mod.toDouble(Math.floor(n/3600%24)),
+            minutes = mod.toDouble(Math.floor(n/60%60)),
+            seconds = mod.toDouble(Math.floor(n%60));
+
+            if(format){
+                ele.innerHTML=format
+                    .replace('{d}', days)
+                    .replace('{h}', hours)
+                    .replace('{m}', minutes)
+                    .replace('{s}', seconds)
+            } else {
+                ele.innerHTML= days  + '天' + hours + '时' + minutes + '分' + seconds + '秒';
+            }
+
+        }
+
+        mod.setTime = function(nDate, ele, format){
+            module.getTime(nDate, ele, format);
+            var t = setInterval(function(){
+                module.getTime(nDate, ele, format);
+            }, 1000);
+        }
+
+        return mod;
+    })();
+
+    var tt = document.getElementById('tt');
+    var li = tt.getElementsByTagName('li');
+    var arrDate = [['2014-09'],['2014-10'],['2014-11'],['2014-12'],['2015-01']];
+
+    for(var i=0; i<li.length; i++){
+        module.setTime(arrDate[i], li[i], '距离 '+arrDate[i]+'    剩余 {d}天 {h}时 {m}分 {s}秒');
+    }
+
+</script>
+</body>
+</html>
